@@ -13,14 +13,14 @@ function! slidemadness#init() " {{{
   set foldlevel=0
 
   " Run the terminal mods
-  exec ":! runghc cur.hs"
-  exec ":!rm cur.hs"
+  :! runghc cur.hs
+  :! rm cur.hs
 
   " Load the vim settings
   source cur.vim
-  !rm cur.vim
+  :! rm cur.vim
 
-  exec ":redraw!"
+  redraw!
   normal zm
 endfunction " }}}
 
