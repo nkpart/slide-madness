@@ -1,5 +1,11 @@
 function! slidemadness#init() " {{{
-  call slidemadness#extract_into("cur.hs", ["import Styles"], "-- > ")
+  if system('ls') =~ '^Styles.hs'
+    let s:hs_header = ["import Styles"]
+  else
+    let s:hs_header = []
+  endif
+
+  call slidemadness#extract_into("cur.hs", s:hs_header, "-- > ")
   call slidemadness#extract_into("cur.vim", ["setlocal background="], "-- :")
 
   " Navigation
