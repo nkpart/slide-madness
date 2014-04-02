@@ -14,12 +14,14 @@ function! slidemadness#init() " {{{
 
   " Run the terminal mods
   exec ":! runghc cur.hs"
+  exec ":!rm cur.hs"
 
   " Load the vim settings
   let xs = readfile("cur.vim")
   for i in xs
     exec i
   endfor
+  exec ":!rm cur.vim"
 
   exec ":redraw!"
   normal zm
