@@ -17,11 +17,8 @@ function! slidemadness#init() " {{{
   exec ":!rm cur.hs"
 
   " Load the vim settings
-  let xs = readfile("cur.vim")
-  for i in xs
-    exec i
-  endfor
-  exec ":!rm cur.vim"
+  source cur.vim
+  !rm cur.vim
 
   exec ":redraw!"
   normal zm
