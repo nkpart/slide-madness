@@ -1,6 +1,12 @@
 function! slidemadness#init() " {{{
-  call slidemadness#extract_into("test.hs", [" import Styles"], "-- >")
-  call slidemadness#extract_into("lol.vim", ["setlocal background="], "-- :")
+  if system('ls') =~ '^Styles.hs'
+    let s:hs_header = ["import Styles"]
+  else
+    let s:hs_header = []
+  endif
+
+  call slidemadness#extract_into("cur.hs", s:hs_header, "-- > ")
+  call slidemadness#extract_into("cur.vim", ["setlocal background="], "-- :")
 
   " Navigation
   nnoremap <buffer> == :call slidemadness#edit_next()<cr>
@@ -13,15 +19,14 @@ function! slidemadness#init() " {{{
   set foldlevel=0
 
   " Run the terminal mods
-  exec ":! runghc test.hs"
+  :! runghc cur.hs
+  :! rm cur.hs
 
   " Load the vim settings
-  let xs = readfile("lol.vim")
-  for i in xs
-    exec i
-  endfor
+  source cur.vim
+  :! rm cur.vim
 
-  exec ":redraw!"
+  redraw!
   normal zm
 endfunction " }}}
 
