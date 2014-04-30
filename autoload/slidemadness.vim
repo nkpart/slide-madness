@@ -45,11 +45,11 @@ endfunction
 function! slidemadness#edit_next()
   let file = expand("%:t")
   let slideNum = file + 0
-  exec ":e " . string(slideNum + 1) . ".*.slide.hs"
+  exec ":e " . string(slideNum + 1) . ".*.slide.*"
 endfunction
 
 function! slidemadness#edit_prev()
   let file = expand("%:t")
   let slideNum = file + 0
-  exec ":e " . string(slideNum - 1) . ".*.slide.hs"
+  exec ":e " . string(slideNum - 1) . ".*.slide.*"
 endfunction

@@ -12,7 +12,9 @@ Usage
 =====
 
 Slides must be in sequential numerical order of the form
-``/\d+\.[^.]*\.slide\.hs/``, and are run in numerical order.
+``/\d+\.[^.]*\.slide\.\w+``, and are run in numerical order.  The
+final part of the filename is irrelevant (i.e., different file types
+are supported), but the ``.slide.`` must be present.
 
 
 Navigation
