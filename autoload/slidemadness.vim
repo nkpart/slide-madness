@@ -1,5 +1,5 @@
 function! slidemadness#init() " {{{
-  if system('ls') =~ '^Styles.hs'
+  if filereadable('Styles.hs')
     let s:hs_header = ["import Styles"]
   else
     let s:hs_header = []
@@ -19,7 +19,10 @@ function! slidemadness#init() " {{{
   set foldlevel=0
 
   " Run the terminal mods
-  :! runghc cur.hs
+  " Some terminal mods require sending escape codes, which aren't
+  " propagated properly with a bare :!, exec ":!<stuff" seems
+  " to fix it
+  exec ":! runghc cur.hs"
   :! rm cur.hs
 
   " Load the vim settings
