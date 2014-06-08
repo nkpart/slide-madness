@@ -11,17 +11,17 @@ Then run ``:NeoBundleInstall`` within Vim.
 Usage
 =====
 
-Slides must be in sequential numerical order of the form
-``/\d+\.[^.]*\.slide\.\w+``, and are run in numerical order.  The
-final part of the filename is irrelevant (i.e., different file types
-are supported), but the ``.slide.`` must be present.
+A slide is any file with a name matching ``*.slide.*``.  Slides are
+run in lexicographical order (you may need to zero-pad if your
+slide filenames begin with numbers).
 
 
 Navigation
 ----------
 
 ``==`` moves to the next slide, while ``--`` goes back to the
-previous slide.
+previous slide.  There are no smarts to automatically open the first
+slide; you have to open a slide to start.
 
 
 Executing Vim commands when entering a slide

@@ -46,13 +46,15 @@ function! slidemadness#extract_into(intoFile, header, prefix)
 endfunction
 
 function! slidemadness#edit_next()
-  let file = expand("%:t")
-  let slideNum = file + 0
-  exec ":e " . string(slideNum + 1) . ".*.slide.*"
+  let cur_file = expand("%:t")
+  let files = systemlist("ls *.slide.*")
+  let cur_index = index(files, cur_file)
+  exec ":e " . files[cur_index + 1]
 endfunction
 
 function! slidemadness#edit_prev()
-  let file = expand("%:t")
-  let slideNum = file + 0
-  exec ":e " . string(slideNum - 1) . ".*.slide.*"
+  let cur_file = expand("%:t")
+  let files = systemlist("ls *.slide.*")
+  let cur_index = index(files, cur_file)
+  exec ":e " . files[cur_index - 1]
 endfunction
