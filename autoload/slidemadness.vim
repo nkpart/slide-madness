@@ -49,12 +49,20 @@ function! slidemadness#edit_next()
   let cur_file = expand("%:t")
   let files = systemlist("ls *.slide.*")
   let cur_index = index(files, cur_file)
-  exec ":e " . files[cur_index + 1]
+  try
+    exec ":e " . files[cur_index + 1]
+  catch /E684:/
+    echo "no more slides"
+  endtry
 endfunction
 
 function! slidemadness#edit_prev()
   let cur_file = expand("%:t")
   let files = systemlist("ls *.slide.*")
   let cur_index = index(files, cur_file)
-  exec ":e " . files[cur_index - 1]
+  if cur_index > 0
+    exec ":e " . files[cur_index - 1]
+  else
+    echo "on first slide"
+  endif
 endfunction
