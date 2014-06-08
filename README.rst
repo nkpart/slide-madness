@@ -41,8 +41,9 @@ Executing Haskell code when entering a slide
 
 When each slide is displayed, slide-madness looks for lines
 beginning with ``-- >``.  The remainder of each such line is
-extracted into a file which is run via ``runghc`` and subsequently
-deleted.
+extracted into a file that is executed via ``runghc`` and
+subsequently deleted.  ``runghc`` is only invoked for files where
+matching lines were found.
 
 If the file ``Styles.hs`` exists, the first line of this file will
 ``import Styles``.
@@ -50,4 +51,5 @@ If the file ``Styles.hs`` exists, the first line of this file will
 This facility could be used to do such things as send commands to
 your terminal.
 
-Currently, a ``main`` must be provided by each slide.
+Currently, a ``main :: IO ()`` function must be provided by each
+slide using this capability.
