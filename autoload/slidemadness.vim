@@ -1,13 +1,4 @@
 function! slidemadness#init() " {{{
-  if filereadable('Styles.hs')
-    let s:hs_header = ["import Styles"]
-  else
-    let s:hs_header = []
-  endif
-
-  call slidemadness#extract_into("cur.hs", s:hs_header, "-- > ")
-  call slidemadness#extract_into("cur.vim", ["setlocal background="], "-- :")
-
   " Navigation
   nnoremap <buffer> == :call slidemadness#edit_next()<cr>
   nnoremap <buffer> -- :call slidemadness#edit_prev()<cr>
@@ -22,37 +13,69 @@ function! slidemadness#init() " {{{
   " Some terminal mods require sending escape codes, which aren't
   " propagated properly with a bare :!, exec ":!<stuff" seems
   " to fix it
-  exec ":! runghc cur.hs"
-  :! rm cur.hs
+  if filereadable('Styles.hs')
+    let s:hs_header = ["import Styles"]
+  else
+    let s:hs_header = []
+  endif
+  if slidemadness#extract_into("cur.hs", s:hs_header, "-- > ")
+    exec ":! runghc cur.hs"
+    :! rm cur.hs
+  endif
 
   " Load the vim settings
-  source cur.vim
-  :! rm cur.vim
+  if slidemadness#extract_into("cur.vim", ["setlocal background="], "-- :")
+    source cur.vim
+    :! rm cur.vim
+  endif
 
   redraw!
   normal zm
 endfunction " }}}
 
+" Extract lines matching the given prefix into a file
+"
+" If no matching lines are found, do not write a file and return
+" zero.
+"
+" If matching lines are found, write them to the specified file with
+" the (possibly empty) header lines prepended and return nonzero.
+"
 function! slidemadness#extract_into(intoFile, header, prefix)
   let xs = readfile(expand("%"))
-  let matching = deepcopy(a:header)
+  let matches = []
   for x in xs
     if match(x, a:prefix) == 0
       let clean = substitute(x, a:prefix, "", "")
-      call add(matching, clean)
+      call add(matches, clean)
     endif
   endfor
-  call writefile(matching, a:intoFile)
+  if empty(matches)
+    return 0
+  else
+    call writefile(a:header + matches, a:intoFile)
+    return 1
+  endif
 endfunction
 
 function! slidemadness#edit_next()
-  let file = expand("%:t")
-  let slideNum = file + 0
-  exec ":e " . string(slideNum + 1) . ".*.slide.*"
+  let cur_file = expand("%:t")
+  let files = systemlist("ls *.slide.*")
+  let cur_index = index(files, cur_file)
+  try
+    exec ":e " . files[cur_index + 1]
+  catch /E684:/
+    echo "no more slides"
+  endtry
 endfunction
 
 function! slidemadness#edit_prev()
-  let file = expand("%:t")
-  let slideNum = file + 0
-  exec ":e " . string(slideNum - 1) . ".*.slide.*"
+  let cur_file = expand("%:t")
+  let files = systemlist("ls *.slide.*")
+  let cur_index = index(files, cur_file)
+  if cur_index > 0
+    exec ":e " . files[cur_index - 1]
+  else
+    echo "on first slide"
+  endif
 endfunction

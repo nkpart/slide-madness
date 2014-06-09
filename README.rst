@@ -11,17 +11,17 @@ Then run ``:NeoBundleInstall`` within Vim.
 Usage
 =====
 
-Slides must be in sequential numerical order of the form
-``/\d+\.[^.]*\.slide\.\w+``, and are run in numerical order.  The
-final part of the filename is irrelevant (i.e., different file types
-are supported), but the ``.slide.`` must be present.
+A slide is any file with a name matching ``*.slide.*``.  Slides are
+run in lexicographical order (you may need to zero-pad if your
+slide filenames begin with numbers).
 
 
 Navigation
 ----------
 
 ``==`` moves to the next slide, while ``--`` goes back to the
-previous slide.
+previous slide.  There are no smarts to automatically open the first
+slide; you have to open a slide to start.
 
 
 Executing Vim commands when entering a slide
@@ -41,8 +41,9 @@ Executing Haskell code when entering a slide
 
 When each slide is displayed, slide-madness looks for lines
 beginning with ``-- >``.  The remainder of each such line is
-extracted into a file which is run via ``runghc`` and subsequently
-deleted.
+extracted into a file that is executed via ``runghc`` and
+subsequently deleted.  ``runghc`` is only invoked for files where
+matching lines were found.
 
 If the file ``Styles.hs`` exists, the first line of this file will
 ``import Styles``.
@@ -50,4 +51,5 @@ If the file ``Styles.hs`` exists, the first line of this file will
 This facility could be used to do such things as send commands to
 your terminal.
 
-Currently, a ``main`` must be provided by each slide.
+Currently, a ``main :: IO ()`` function must be provided by each
+slide using this capability.
