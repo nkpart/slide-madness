@@ -24,7 +24,10 @@ function! slidemadness#init() " {{{
   endif
 
   " Load the vim settings
-  if slidemadness#extract_into("cur.vim", ["setlocal background="], "-- :")
+  if filereadable('default.vim')
+    source default.vim
+  endif
+  if slidemadness#extract_into("cur.vim", [], "-- :")
     source cur.vim
     :! rm cur.vim
   endif

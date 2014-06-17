@@ -27,13 +27,18 @@ slide; you have to open a slide to start.
 Executing Vim commands when entering a slide
 --------------------------------------------
 
-When each slide is displayed, slide-madness looks for lines
-beginning with ``-- :``, writes the remainder of all such lines into
-a file and sources the file, before deleting it.
+For Vim commands that should be executed in every slide, put them in
+``default.vim`` alongside the slides.  ``default.vim`` is sourced
+for each slide, *before* executing commands from the slides
+themselves.
 
-This could be used to ``set nonumber``, change highlighting
-configuration or many other things you might find useful during a
-presentation.
+When each slide is displayed, *after* sourcing ``default.vim`` (if
+it exists), slide-madness looks for lines beginning with ``-- :``,
+writes the remainder of all such lines into a file and sources that
+file, before deleting it.
+
+Be aware that ``set`` will affect subsequent slides.  Use
+``setlocal`` to apply settings to a single slide.
 
 
 Executing Haskell code when entering a slide
