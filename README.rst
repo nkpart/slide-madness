@@ -1,6 +1,9 @@
 Installation
 ============
 
+slide-madness requires at minimum **Vim 7.4 with patches 248 and
+256**.
+
 If you use NeoBundle, add to your ``~/.vimrc`` the following line::
 
   NeoBundle 'nkpart/slide-madness'
