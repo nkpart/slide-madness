@@ -63,7 +63,8 @@ endfunction
 
 function! slidemadness#edit_next()
   let cur_file = expand("%:t")
-  let files = systemlist("ls *.slide.*")
+  let files = split(system('ls *.slide.*'), '\n')
+  echo files
   let cur_index = index(files, cur_file)
   try
     exec ":e " . files[cur_index + 1]
@@ -74,7 +75,7 @@ endfunction
 
 function! slidemadness#edit_prev()
   let cur_file = expand("%:t")
-  let files = systemlist("ls *.slide.*")
+  let files = split(system("ls *.slide.*"), '\n')
   let cur_index = index(files, cur_file)
   if cur_index > 0
     exec ":e " . files[cur_index - 1]
